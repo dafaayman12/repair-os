@@ -29,6 +29,12 @@ export default function DashboardPage() {
               Home
             </Link>
             <Link
+              href="/customers"
+              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
+            >
+              Customers
+            </Link>
+            <Link
               href="/inventory"
               className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
             >

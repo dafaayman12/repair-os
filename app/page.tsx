@@ -38,6 +38,16 @@ export default function HomePage() {
                 Track screens, batteries, screws, and parts.
               </div>
             </Link>
+
+            <Link
+              href="/customers"
+              className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+            >
+              <div className="text-lg font-medium text-white">Customers</div>
+              <div className="mt-1 text-sm text-zinc-400">
+                Browse customer contacts and repair history.
+              </div>
+            </Link>
           </div>
         </div>
       </div>
