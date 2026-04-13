@@ -124,13 +124,13 @@ export default async function DashboardPage() {
         <>
           <Link
             href="/repairs"
-            className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-amber-200/35 hover:bg-zinc-900"
+            className="rounded-lg border border-blue-300/25 bg-[#112349] px-4 py-2 text-sm text-blue-100 transition hover:border-blue-300/50 hover:bg-[#173469]"
           >
             Repairs
           </Link>
           <Link
             href="/inventory"
-            className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-4 py-2 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+            className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-4 py-2 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
           >
             Inventory
           </Link>
@@ -139,16 +139,16 @@ export default async function DashboardPage() {
       toolbar={
         <>
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-amber-300 shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
-            <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+            <span className="h-2 w-2 rounded-full bg-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+            <p className="text-xs uppercase tracking-[0.2em] text-blue-100/70">
               Daily Command Center
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="rounded-xl border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-400">
+            <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-1.5 text-xs text-blue-100/70">
               Today
             </div>
-            <div className="rounded-xl border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-400">
+            <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-1.5 text-xs text-blue-100/70">
               Repairs + Inventory
             </div>
           </div>
@@ -156,27 +156,42 @@ export default async function DashboardPage() {
       }
     >
       <div className="space-y-6">
+        <section className="flex flex-wrap gap-2">
+          {["Overview", "Queue", "Customers", "Revenue"].map((tab, index) => (
+            <span
+              key={tab}
+              className={`rounded-lg border px-3 py-1.5 text-xs ${
+                index === 0
+                  ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
+                  : "border-blue-300/20 bg-[#112349] text-blue-100/70"
+              }`}
+            >
+              {tab}
+            </span>
+          ))}
+        </section>
+
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {cards.map((card) => (
             <div
               key={card.title}
-              className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 shadow-[0_0_45px_rgba(251,191,36,0.05)]"
+              className="rounded-2xl border border-blue-300/20 bg-[#112349] p-5 shadow-[0_0_35px_rgba(37,99,235,0.12)]"
             >
-              <p className="text-xs uppercase tracking-[0.14em] text-zinc-500">
+              <p className="text-xs uppercase tracking-[0.14em] text-blue-100/55">
                 {card.title}
               </p>
               <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
                 {card.value}
               </p>
-              <p className="mt-2 text-sm text-zinc-500">{card.hint}</p>
+              <p className="mt-2 text-sm text-blue-100/55">{card.hint}</p>
             </div>
           ))}
         </section>
 
         <section className="grid gap-6 xl:grid-cols-3">
-          <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 xl:col-span-2">
-            <div className="border-b border-white/10 px-6 py-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+          <div className="overflow-hidden rounded-2xl border border-blue-300/20 bg-[#112349] xl:col-span-2">
+            <div className="border-b border-blue-300/20 px-5 py-3">
+              <p className="text-xs uppercase tracking-[0.2em] text-blue-100/55">
                 Recent Repairs
               </p>
               <h2 className="mt-2 text-lg font-medium text-white">
@@ -190,7 +205,7 @@ export default async function DashboardPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-zinc-950/80 text-xs uppercase tracking-[0.14em] text-zinc-500">
+                  <thead className="bg-[#0b1731] text-xs uppercase tracking-[0.14em] text-blue-100/55">
                     <tr>
                       <th className="px-6 py-4 font-medium">Customer</th>
                       <th className="px-6 py-4 font-medium">Device</th>
@@ -202,7 +217,7 @@ export default async function DashboardPage() {
                     {recentRepairs.map((repair) => (
                       <tr
                         key={repair.id}
-                        className="border-t border-white/10 text-zinc-200 transition hover:bg-white/[0.02]"
+                        className="border-t border-blue-300/20 text-zinc-200 transition hover:bg-blue-500/5"
                       >
                         <td className="px-6 py-4">
                           <Link
@@ -225,15 +240,15 @@ export default async function DashboardPage() {
             )}
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+          <div className="rounded-2xl border border-blue-300/20 bg-[#112349] p-5">
+            <p className="text-xs uppercase tracking-[0.2em] text-blue-100/55">
               Low Stock Watch
             </p>
             <h2 className="mt-2 text-lg font-medium text-white">
               Parts to monitor
             </h2>
             {lowStockItems.length === 0 ? (
-              <div className="mt-5 rounded-xl border border-white/10 bg-zinc-900/70 px-4 py-3 text-sm text-zinc-400">
+              <div className="mt-5 rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-3 text-sm text-blue-100/60">
                 No low-stock items right now.
               </div>
             ) : (
@@ -241,7 +256,7 @@ export default async function DashboardPage() {
                 {lowStockItems.slice(0, 6).map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-xl border border-white/10 bg-zinc-900/70 px-4 py-3"
+                    className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-3"
                   >
                     <p className="text-sm text-white">{item.name}</p>
                     <p className="mt-1 text-xs text-zinc-400">
@@ -255,10 +270,10 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-amber-200/20 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-6 shadow-[0_0_60px_rgba(251,146,60,0.08)]">
+        <section className="rounded-2xl border border-blue-300/25 bg-[#112349] p-5 shadow-[0_0_50px_rgba(37,99,235,0.15)]">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-amber-200/70">
+              <p className="text-xs uppercase tracking-[0.2em] text-blue-100/65">
                 Workflow Pipeline
               </p>
               <h2 className="mt-2 text-lg font-medium text-white">
@@ -267,7 +282,7 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/repairs"
-              className="rounded-xl border border-amber-200/30 bg-amber-300/10 px-4 py-2 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+              className="rounded-lg border border-blue-300/45 bg-blue-500/20 px-4 py-2 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
             >
               Open Repairs Board
             </Link>
@@ -277,7 +292,7 @@ export default async function DashboardPage() {
             {workflow.map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-white/10 bg-zinc-900/70 p-4"
+                className="rounded-xl border border-blue-300/20 bg-[#0b1731] p-4"
               >
                 <p className="text-xs uppercase tracking-[0.14em] text-zinc-500">
                   {item.label}
@@ -285,7 +300,7 @@ export default async function DashboardPage() {
                 <p className="mt-2 text-2xl font-semibold text-white">
                   {pipelineCounts[item.key] ?? 0}
                 </p>
-                <p className="mt-1 text-xs text-zinc-500">{item.hint}</p>
+                <p className="mt-1 text-xs text-blue-100/50">{item.hint}</p>
               </div>
             ))}
           </div>

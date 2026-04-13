@@ -19,21 +19,36 @@ export default async function InventoryPage() {
         <>
           <Link
             href="/dashboard"
-            className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-amber-200/35 hover:bg-zinc-900"
+            className="rounded-lg border border-blue-300/20 bg-[#112349] px-4 py-2 text-sm text-blue-100/80 transition hover:border-blue-300/45 hover:bg-[#173469]"
           >
             Dashboard
           </Link>
           <Link
             href="/inventory/new"
-            className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-4 py-2 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+            className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-4 py-2 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
           >
             Add Item
           </Link>
         </>
       }
     >
-      <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 shadow-[0_0_60px_rgba(251,146,60,0.08)]">
-        <div className="border-b border-white/10 px-6 py-5">
+      <div className="mb-4 flex flex-wrap gap-2">
+        {["All Categories", "Low Stock", "Out", "Archived"].map((tab, i) => (
+          <span
+            key={tab}
+            className={`rounded-lg border px-3 py-1.5 text-xs ${
+              i === 0
+                ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
+                : "border-blue-300/20 bg-[#112349] text-blue-100/70"
+            }`}
+          >
+            {tab}
+          </span>
+        ))}
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border border-blue-300/20 bg-[#112349] shadow-[0_0_50px_rgba(37,99,235,0.12)]">
+        <div className="border-b border-blue-300/20 px-6 py-4">
           <h2 className="text-lg font-medium text-white">All Items</h2>
           <p className="mt-1 text-sm text-zinc-400">
             Screens, batteries, screws, flex cables, and consumables.
@@ -45,7 +60,7 @@ export default async function InventoryPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-zinc-950/80 text-xs uppercase tracking-[0.14em] text-zinc-500">
+              <thead className="bg-[#0b1731] text-xs uppercase tracking-[0.14em] text-blue-100/55">
                 <tr>
                   <th className="px-6 py-4 font-medium">Name</th>
                   <th className="px-6 py-4 font-medium">Category</th>
@@ -58,7 +73,7 @@ export default async function InventoryPage() {
                 {items.map((item) => (
                   <tr
                     key={item.id}
-                    className="border-t border-white/10 text-zinc-200 transition hover:bg-white/[0.02]"
+                    className="border-t border-blue-300/20 text-zinc-200 transition hover:bg-blue-500/5"
                   >
                     <td className="px-6 py-4">{item.name}</td>
                     <td className="px-6 py-4">{item.category}</td>
