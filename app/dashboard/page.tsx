@@ -1,21 +1,120 @@
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
-
-const cards = [
-  { title: "Open Repairs", value: "0", hint: "No repairs yet" },
-  { title: "Waiting Parts", value: "0", hint: "Nothing pending" },
-  { title: "Low Stock Items", value: "0", hint: "Inventory healthy" },
-  { title: "Today Revenue", value: "0 DH", hint: "No sales recorded" },
-];
+import { prisma } from "@/lib/prisma";
 
 const workflow = [
-  { label: "New", value: "0", hint: "Recently created tickets" },
-  { label: "Diagnosing", value: "0", hint: "In technical review" },
-  { label: "Waiting Part", value: "0", hint: "Pending parts arrival" },
-  { label: "Ready", value: "0", hint: "Ready for pickup" },
+  { label: "New", key: "NEW", hint: "Recently created tickets" },
+  { label: "Diagnosing", key: "DIAGNOSING", hint: "In technical review" },
+  { label: "Waiting Part", key: "WAITING_PART", hint: "Pending parts arrival" },
+  { label: "Ready", key: "READY", hint: "Ready for pickup" },
 ];
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const tomorrowStart = new Date(todayStart);
+  tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+  const [
+    openRepairs,
+    waitingParts,
+    inventoryItems,
+    todayRevenueResult,
+    recentRepairs,
+    pipelineCountsRaw,
+  ] = await Promise.all([
+    prisma.repair.count({
+      where: {
+        status: {
+          not: "CLOSED",
+        },
+      },
+    }),
+    prisma.repair.count({
+      where: {
+        status: "WAITING_PART",
+      },
+    }),
+    prisma.inventoryItem.findMany({
+      select: {
+        id: true,
+        name: true,
+        category: true,
+        quantityInStock: true,
+        minStock: true,
+      },
+      orderBy: {
+        quantityInStock: "asc",
+      },
+    }),
+    prisma.repair.aggregate({
+      where: {
+        status: "CLOSED",
+        closedAt: {
+          gte: todayStart,
+          lt: tomorrowStart,
+        },
+      },
+      _sum: {
+        totalPrice: true,
+      },
+    }),
+    prisma.repair.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 6,
+      include: {
+        customer: true,
+        device: true,
+      },
+    }),
+    prisma.repair.groupBy({
+      by: ["status"],
+      where: {
+        status: {
+          in: ["NEW", "DIAGNOSING", "WAITING_PART", "READY"],
+        },
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+  ]);
+
+  const lowStockItems = inventoryItems.filter(
+    (item) => item.quantityInStock <= item.minStock
+  );
+
+  const pipelineCounts = Object.fromEntries(
+    pipelineCountsRaw.map((item) => [item.status, item._count._all])
+  );
+
+  const cards = [
+    {
+      title: "Open Repairs",
+      value: String(openRepairs),
+      hint: openRepairs === 0 ? "No repairs yet" : "Active repair tickets",
+    },
+    {
+      title: "Waiting Parts",
+      value: String(waitingParts),
+      hint: waitingParts === 0 ? "Nothing pending" : "Pending part arrivals",
+    },
+    {
+      title: "Low Stock Items",
+      value: String(lowStockItems.length),
+      hint:
+        lowStockItems.length === 0 ? "Inventory healthy" : "Needs restocking",
+    },
+    {
+      title: "Today Revenue",
+      value: `${todayRevenueResult._sum.totalPrice ?? 0} DH`,
+      hint: "From repairs closed today",
+    },
+  ];
+
   return (
     <AppShell
       section="Operations"
@@ -84,9 +183,46 @@ export default function DashboardPage() {
                 Latest ticket activity
               </h2>
             </div>
-            <div className="px-6 py-10 text-sm text-zinc-400">
-              No recent repairs yet.
-            </div>
+            {recentRepairs.length === 0 ? (
+              <div className="px-6 py-10 text-sm text-zinc-400">
+                No recent repairs yet.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead className="bg-zinc-950/80 text-xs uppercase tracking-[0.14em] text-zinc-500">
+                    <tr>
+                      <th className="px-6 py-4 font-medium">Customer</th>
+                      <th className="px-6 py-4 font-medium">Device</th>
+                      <th className="px-6 py-4 font-medium">Status</th>
+                      <th className="px-6 py-4 font-medium">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentRepairs.map((repair) => (
+                      <tr
+                        key={repair.id}
+                        className="border-t border-white/10 text-zinc-200 transition hover:bg-white/[0.02]"
+                      >
+                        <td className="px-6 py-4">
+                          <Link
+                            href={`/repairs/${repair.id}`}
+                            className="text-white underline-offset-4 hover:underline"
+                          >
+                            {repair.customer.fullName}
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4">
+                          {repair.device.brand} {repair.device.model}
+                        </td>
+                        <td className="px-6 py-4">{repair.status}</td>
+                        <td className="px-6 py-4">{repair.totalPrice}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
           <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6">
@@ -96,9 +232,26 @@ export default function DashboardPage() {
             <h2 className="mt-2 text-lg font-medium text-white">
               Parts to monitor
             </h2>
-            <div className="mt-5 rounded-xl border border-white/10 bg-zinc-900/70 px-4 py-3 text-sm text-zinc-400">
-              No low-stock items right now.
-            </div>
+            {lowStockItems.length === 0 ? (
+              <div className="mt-5 rounded-xl border border-white/10 bg-zinc-900/70 px-4 py-3 text-sm text-zinc-400">
+                No low-stock items right now.
+              </div>
+            ) : (
+              <div className="mt-5 space-y-3">
+                {lowStockItems.slice(0, 6).map((item) => (
+                  <div
+                    key={item.id}
+                    className="rounded-xl border border-white/10 bg-zinc-900/70 px-4 py-3"
+                  >
+                    <p className="text-sm text-white">{item.name}</p>
+                    <p className="mt-1 text-xs text-zinc-400">
+                      {item.category} · Stock {item.quantityInStock} / Min{" "}
+                      {item.minStock}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -130,7 +283,7 @@ export default function DashboardPage() {
                   {item.label}
                 </p>
                 <p className="mt-2 text-2xl font-semibold text-white">
-                  {item.value}
+                  {pipelineCounts[item.key] ?? 0}
                 </p>
                 <p className="mt-1 text-xs text-zinc-500">{item.hint}</p>
               </div>
