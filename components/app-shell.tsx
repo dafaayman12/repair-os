@@ -15,6 +15,7 @@ type AppShellProps = {
   description: string;
   actions?: ReactNode;
   toolbar?: ReactNode;
+  showToolbar?: boolean;
   fullWidth?: boolean;
   children: ReactNode;
 };
@@ -33,6 +34,7 @@ export function AppShell({
   description,
   actions,
   toolbar,
+  showToolbar = true,
   fullWidth = false,
   children,
 }: AppShellProps) {
@@ -96,18 +98,20 @@ export function AppShell({
           </header>
 
           <section className="flex-1 px-4 py-4 lg:px-6">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-blue-300/20 bg-[#0d1a36] px-3 py-2">
-              {toolbar ?? (
-                <>
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-blue-100/60">
-                    Main Workspace
-                  </p>
-                  <div className="rounded-md border border-blue-300/20 bg-[#112349] px-2.5 py-0.5 text-[11px] text-blue-100/65">
-                    Operations
-                  </div>
-                </>
-              )}
-            </div>
+            {showToolbar ? (
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-blue-300/20 bg-[#0d1a36] px-3 py-2">
+                {toolbar ?? (
+                  <>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-blue-100/60">
+                      Main Workspace
+                    </p>
+                    <div className="rounded-md border border-blue-300/20 bg-[#112349] px-2.5 py-0.5 text-[11px] text-blue-100/65">
+                      Operations
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : null}
 
             {children}
           </section>

@@ -12,6 +12,13 @@ import {
   Zap,
 } from "lucide-react";
 
+const workflow = [
+  { label: "New", key: "NEW", hint: "Recently created" },
+  { label: "Diagnosing", key: "DIAGNOSING", hint: "In review" },
+  { label: "Waiting Part", key: "WAITING_PART", hint: "Part not arrived" },
+  { label: "Ready", key: "READY", hint: "Pickup now" },
+];
+
 export default async function DashboardPage() {
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
@@ -27,6 +34,7 @@ export default async function DashboardPage() {
     todayRevenueResult,
     recentRepairs,
     readyCount,
+    pipelineCountsRaw,
   ] = await Promise.all([
     prisma.repair.count({
       where: {
@@ -80,23 +88,64 @@ export default async function DashboardPage() {
         status: "READY",
       },
     }),
+    prisma.repair.groupBy({
+      by: ["status"],
+      where: {
+        status: {
+          in: ["NEW", "DIAGNOSING", "WAITING_PART", "READY"],
+        },
+      },
+      _count: {
+        _all: true,
+      },
+    }),
   ]);
 
   const lowStockItems = inventoryItems.filter(
     (item) => item.quantityInStock <= item.minStock
   );
 
+  const pipelineCounts = Object.fromEntries(
+    pipelineCountsRaw.map((item) => [item.status, item._count._all])
+  );
+
   const kpis = [
-    { label: "To Evaluate", value: waitingParts, hint: "awaiting diagnosis", tone: "bg-amber-300" },
-    { label: "In Progress", value: openRepairs, hint: "being repaired", tone: "bg-blue-300" },
-    { label: "Ready", value: readyCount, hint: "awaiting pickup", tone: "bg-emerald-300" },
-    { label: "Active", value: recentRepairs.length, hint: "total in shop", tone: "bg-cyan-300" },
-    { label: "Customers", value: customersCount, hint: "registered", tone: "bg-violet-300" },
+    {
+      label: "To Evaluate",
+      value: waitingParts,
+      hint: "awaiting diagnosis",
+      tone: "bg-amber-300",
+    },
+    {
+      label: "In Progress",
+      value: openRepairs,
+      hint: "being repaired",
+      tone: "bg-blue-300",
+    },
+    {
+      label: "Ready",
+      value: readyCount,
+      hint: "awaiting pickup",
+      tone: "bg-emerald-300",
+    },
+    {
+      label: "Active",
+      value: recentRepairs.length,
+      hint: "total in shop",
+      tone: "bg-cyan-300",
+    },
+    {
+      label: "Customers",
+      value: customersCount,
+      hint: "registered",
+      tone: "bg-violet-300",
+    },
   ];
 
   return (
     <AppShell
       fullWidth
+      showToolbar={false}
       section="Operations"
       title="Dashboard"
       description="Repair shop overview"
@@ -123,7 +172,6 @@ export default async function DashboardPage() {
           </button>
         </>
       }
-      toolbar={null}
     >
       <div className="space-y-2">
         <section className="grid gap-2 xl:grid-cols-5">
@@ -142,7 +190,60 @@ export default async function DashboardPage() {
           ))}
         </section>
 
-        <section className="grid gap-2 xl:grid-cols-[1.5fr_1fr]">
+        <section className="grid gap-2 xl:grid-cols-[1fr_1.45fr_1fr]">
+          <div className="space-y-2">
+            <div className="rounded-lg border border-blue-300/25 bg-[#101f40]">
+              <div className="border-b border-blue-300/20 px-3 py-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-100/70">
+                  Quick Navigation
+                </p>
+              </div>
+              <div className="space-y-1.5 px-3 py-2">
+                {[
+                  { label: "Repair Orders", href: "/repairs", icon: Wrench },
+                  { label: "Customers", href: "/customers", icon: Users },
+                  { label: "Inventory", href: "/inventory", icon: Package },
+                ].map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="flex items-center justify-between rounded-md border border-blue-300/20 bg-[#0b1731] px-2.5 py-2 text-xs text-blue-100/85"
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <item.icon size={11} className="text-blue-200/75" />
+                      {item.label}
+                    </span>
+                    <ChevronRight size={12} className="text-blue-200/65" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-blue-300/25 bg-[#101f40]">
+              <div className="border-b border-blue-300/20 px-3 py-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-100/70">
+                  Workflow Queue
+                </p>
+              </div>
+              <div className="space-y-1.5 px-3 py-2">
+                {workflow.map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between rounded-md border border-blue-300/20 bg-[#0b1731] px-2.5 py-2"
+                  >
+                    <div>
+                      <p className="text-xs text-white">{item.label}</p>
+                      <p className="text-[11px] text-blue-100/50">{item.hint}</p>
+                    </div>
+                    <span className="rounded-md border border-blue-300/30 bg-[#123061] px-2 py-0.5 text-xs font-medium text-blue-100">
+                      {pipelineCounts[item.key] ?? 0}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-2">
             <div className="rounded-lg border border-blue-300/25 bg-[#101f40]">
               <div className="flex items-center justify-between border-b border-blue-300/20 px-3 py-2">
@@ -159,7 +260,7 @@ export default async function DashboardPage() {
                 <div className="space-y-1.5 px-3 py-2">
                   {recentRepairs
                     .filter((repair) => repair.status === "READY")
-                    .slice(0, 4)
+                    .slice(0, 5)
                     .map((repair) => (
                       <Link
                         key={repair.id}
@@ -192,32 +293,9 @@ export default async function DashboardPage() {
           <div className="space-y-2">
             <div className="rounded-lg border border-blue-300/25 bg-[#101f40]">
               <div className="border-b border-blue-300/20 px-3 py-2">
-                <h2 className="text-sm font-semibold text-blue-100">Quick Navigation</h2>
-              </div>
-              <div className="space-y-1.5 px-3 py-2">
-                {[
-                  { label: "Repair Orders", href: "/repairs", icon: Wrench },
-                  { label: "Customers", href: "/customers", icon: Users },
-                  { label: "Inventory", href: "/inventory", icon: Package },
-                ].map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center justify-between rounded-md border border-blue-300/20 bg-[#0b1731] px-2.5 py-2 text-xs text-blue-100/85"
-                  >
-                    <span className="inline-flex items-center gap-1.5">
-                      <item.icon size={11} className="text-blue-200/75" />
-                      {item.label}
-                    </span>
-                    <ChevronRight size={12} className="text-blue-200/65" />
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-blue-300/25 bg-[#101f40]">
-              <div className="border-b border-blue-300/20 px-3 py-2">
-                <h2 className="text-sm font-semibold text-blue-100">Shop Stats</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-100/70">
+                  Shop Stats
+                </p>
               </div>
               <div className="space-y-1.5 px-3 py-2">
                 <div className="flex items-center justify-between rounded-md border border-blue-300/20 bg-[#0b1731] px-2.5 py-2 text-xs">
@@ -238,17 +316,23 @@ export default async function DashboardPage() {
                   <span className="inline-flex items-center gap-1.5 text-blue-100/75">
                     <CircleDollarSign size={11} /> Week Revenue
                   </span>
-                  <span className="font-semibold text-emerald-300">${todayRevenueResult._sum.totalPrice ?? 0}</span>
+                  <span className="font-semibold text-emerald-300">
+                    ${todayRevenueResult._sum.totalPrice ?? 0}
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-lg border border-blue-300/25 bg-[#101f40] px-3 py-2">
-              <p className="text-[11px] uppercase tracking-[0.14em] text-blue-100/55">Low Stock</p>
+            <div className="rounded-lg border border-blue-300/25 bg-[#101f40]">
+              <div className="border-b border-blue-300/20 px-3 py-2">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-100/70">
+                  Low Stock Watch
+                </p>
+              </div>
               {lowStockItems.length === 0 ? (
-                <p className="mt-2 text-xs text-blue-100/50">No low-stock alerts.</p>
+                <p className="px-3 py-3 text-xs text-blue-100/50">No low-stock alerts.</p>
               ) : (
-                <div className="mt-2 space-y-1.5">
+                <div className="space-y-1.5 px-3 py-2">
                   {lowStockItems.slice(0, 3).map((item) => (
                     <div
                       key={item.id}
