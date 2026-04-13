@@ -15,6 +15,7 @@ type AppShellProps = {
   description: string;
   actions?: ReactNode;
   toolbar?: ReactNode;
+  fullWidth?: boolean;
   children: ReactNode;
 };
 
@@ -32,11 +33,12 @@ export function AppShell({
   description,
   actions,
   toolbar,
+  fullWidth = false,
   children,
 }: AppShellProps) {
   return (
     <main className="min-h-screen bg-[#060f24] text-zinc-100">
-      <div className="mx-auto flex min-h-screen max-w-[1700px]">
+      <div className={`${fullWidth ? "flex min-h-screen w-full" : "mx-auto flex min-h-screen max-w-[1700px]"}`}>
         <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-blue-300/20 bg-[#08142d] px-2.5 py-2.5 xl:block">
           <div className="rounded-xl border border-blue-300/30 bg-gradient-to-br from-blue-400/20 via-blue-300/10 to-transparent px-3 py-2.5 shadow-[0_0_18px_rgba(59,130,246,0.15)]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-blue-200/80">
