@@ -37,7 +37,7 @@ export function AppShell({
   return (
     <main className="min-h-screen bg-[#060f24] text-zinc-100">
       <div className="mx-auto flex min-h-screen max-w-[1700px]">
-        <aside className="hidden w-64 shrink-0 border-r border-blue-300/20 bg-[#08142d] px-3 py-3 xl:block">
+        <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-blue-300/20 bg-[#08142d] px-2.5 py-2.5 xl:block">
           <div className="rounded-xl border border-blue-300/30 bg-gradient-to-br from-blue-400/20 via-blue-300/10 to-transparent px-3 py-2.5 shadow-[0_0_18px_rgba(59,130,246,0.15)]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-blue-200/80">
               Service Desk
@@ -48,12 +48,12 @@ export function AppShell({
           <p className="mt-4 mb-2 px-1 text-[10px] uppercase tracking-[0.18em] text-blue-200/55">
             Navigation
           </p>
-          <nav className="space-y-1.5">
+          <nav className="space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="group block rounded-lg border border-blue-300/20 bg-[#0d1a36] px-3 py-2 text-sm text-blue-100/85 transition hover:border-blue-300/45 hover:bg-[#123061] hover:text-white"
+                className="group block rounded-lg border border-blue-300/20 bg-[#0d1a36] px-2.5 py-1.5 text-sm text-blue-100/85 transition hover:border-blue-300/45 hover:bg-[#123061] hover:text-white"
               >
                 <span className="inline-flex items-center gap-2">
                   <link.icon size={14} className="text-blue-200/75 transition group-hover:text-blue-200" />
