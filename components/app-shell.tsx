@@ -6,6 +6,7 @@ type AppShellProps = {
   title: string;
   description: string;
   actions?: ReactNode;
+  toolbar?: ReactNode;
   children: ReactNode;
 };
 
@@ -22,6 +23,7 @@ export function AppShell({
   title,
   description,
   actions,
+  toolbar,
   children,
 }: AppShellProps) {
   return (
@@ -81,7 +83,22 @@ export function AppShell({
             </div>
           </header>
 
-          <section className="flex-1 px-6 py-8 lg:px-10">{children}</section>
+          <section className="flex-1 px-6 py-8 lg:px-10">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-zinc-900/50 px-4 py-3">
+              {toolbar ?? (
+                <>
+                  <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+                    Main Workspace
+                  </p>
+                  <div className="rounded-xl border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-400">
+                    Live Surface
+                  </div>
+                </>
+              )}
+            </div>
+
+            {children}
+          </section>
         </div>
       </div>
     </main>
