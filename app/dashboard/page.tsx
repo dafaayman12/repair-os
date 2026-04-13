@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AppShell } from "@/components/app-shell";
 
 const cards = [
   { title: "Open Repairs", value: "0", hint: "No repairs yet" },
@@ -9,61 +10,41 @@ const cards = [
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-7xl px-6 py-10">
-        <div className="mb-10 flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">
-              Operations
+    <AppShell
+      section="Operations"
+      title="Dashboard"
+      description="Track the most important daily signals across your repair business."
+      actions={
+        <>
+          <Link
+            href="/repairs"
+            className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-amber-200/35 hover:bg-zinc-900"
+          >
+            Repairs
+          </Link>
+          <Link
+            href="/inventory"
+            className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-4 py-2 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+          >
+            Inventory
+          </Link>
+        </>
+      }
+    >
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {cards.map((card) => (
+          <div
+            key={card.title}
+            className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 shadow-[0_0_50px_rgba(251,191,36,0.04)]"
+          >
+            <p className="text-sm tracking-wide text-zinc-400">{card.title}</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
+              {card.value}
             </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">
-              Dashboard
-            </h1>
+            <p className="mt-3 text-sm text-zinc-500">{card.hint}</p>
           </div>
-
-          <div className="flex gap-3">
-            <Link
-              href="/"
-              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
-            >
-              Home
-            </Link>
-            <Link
-              href="/customers"
-              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
-            >
-              Customers
-            </Link>
-            <Link
-              href="/repairs"
-              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
-            >
-              Repairs
-            </Link>
-            <Link
-              href="/inventory"
-              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
-            >
-              Inventory
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {cards.map((card) => (
-            <div
-              key={card.title}
-              className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.02)]"
-            >
-              <p className="text-sm tracking-wide text-zinc-400">{card.title}</p>
-              <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
-                {card.value}
-              </p>
-              <p className="mt-3 text-sm text-zinc-500">{card.hint}</p>
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
-    </main>
+    </AppShell>
   );
 }
