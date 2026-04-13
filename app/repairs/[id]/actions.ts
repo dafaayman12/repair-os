@@ -2,7 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { RepairStatus } from "@/app/generated/prisma/client";
+import {
+  PaymentStatus,
+  Priority,
+  RepairStatus,
+} from "@/app/generated/prisma/client";
 
 export async function addPartToRepair(formData: FormData) {
   const repairId = String(formData.get("repairId") ?? "").trim();
@@ -103,6 +107,139 @@ export async function updateRepairStatus(formData: FormData) {
     data: {
       status,
       closedAt: status === "CLOSED" ? new Date() : null,
+    },
+  });
+
+  revalidatePath(`/repairs/${repairId}`);
+  revalidatePath("/repairs");
+}
+
+export async function removePartFromRepair(formData: FormData) {
+  const repairId = String(formData.get("repairId") ?? "").trim();
+  const partId = String(formData.get("partId") ?? "").trim();
+  const confirmRemove = String(formData.get("confirmRemove") ?? "").trim();
+
+  if (!repairId || !partId) {
+    throw new Error("Repair and part are required.");
+  }
+
+  if (confirmRemove !== "true") {
+    throw new Error("Please confirm removal before continuing.");
+  }
+
+  const repair = await prisma.repair.findUnique({
+    where: { id: repairId },
+    select: { id: true, laborPrice: true },
+  });
+
+  if (!repair) {
+    throw new Error("Repair not found.");
+  }
+
+  const part = await prisma.repairPartUsed.findUnique({
+    where: { id: partId },
+    select: {
+      id: true,
+      repairId: true,
+      inventoryItemId: true,
+      quantity: true,
+    },
+  });
+
+  if (!part || part.repairId !== repairId) {
+    throw new Error("Part not found for this repair.");
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.repairPartUsed.delete({
+      where: { id: partId },
+    });
+
+    await tx.inventoryItem.update({
+      where: { id: part.inventoryItemId },
+      data: {
+        quantityInStock: {
+          increment: part.quantity,
+        },
+      },
+    });
+
+    const parts = await tx.repairPartUsed.findMany({
+      where: { repairId },
+      select: { totalCost: true },
+    });
+
+    const partsCost = parts.reduce((sum, item) => sum + item.totalCost, 0);
+
+    await tx.repair.update({
+      where: { id: repairId },
+      data: {
+        partsCost,
+        totalPrice: repair.laborPrice + partsCost,
+      },
+    });
+  });
+
+  revalidatePath(`/repairs/${repairId}`);
+  revalidatePath("/repairs");
+  revalidatePath("/inventory");
+}
+
+export async function updateRepairDetails(formData: FormData) {
+  const repairId = String(formData.get("repairId") ?? "").trim();
+  const issue = String(formData.get("issue") ?? "").trim();
+  const diagnosisRaw = String(formData.get("diagnosis") ?? "").trim();
+  const laborPriceRaw = Number(formData.get("laborPrice") ?? 0);
+  const paymentStatusRaw = String(formData.get("paymentStatus") ?? "").trim();
+  const priorityRaw = String(formData.get("priority") ?? "").trim();
+
+  if (!repairId || !issue) {
+    throw new Error("Repair and issue are required.");
+  }
+
+  if (Number.isNaN(laborPriceRaw) || laborPriceRaw < 0) {
+    throw new Error("Labor price must be a valid non-negative number.");
+  }
+
+  const allowedPaymentStatuses = ["UNPAID", "PARTIAL", "PAID"] as const;
+  if (
+    !allowedPaymentStatuses.includes(
+      paymentStatusRaw as (typeof allowedPaymentStatuses)[number]
+    )
+  ) {
+    throw new Error("Invalid payment status.");
+  }
+
+  const allowedPriorities = ["LOW", "NORMAL", "HIGH", "URGENT"] as const;
+  if (
+    !allowedPriorities.includes(priorityRaw as (typeof allowedPriorities)[number])
+  ) {
+    throw new Error("Invalid priority.");
+  }
+
+  const repair = await prisma.repair.findUnique({
+    where: { id: repairId },
+    select: { id: true, partsCost: true },
+  });
+
+  if (!repair) {
+    throw new Error("Repair not found.");
+  }
+
+  const laborPrice = laborPriceRaw;
+  const paymentStatus = paymentStatusRaw as PaymentStatus;
+  const priority = priorityRaw as Priority;
+  const diagnosis = diagnosisRaw || null;
+
+  await prisma.repair.update({
+    where: { id: repairId },
+    data: {
+      issue,
+      diagnosis,
+      laborPrice,
+      paymentStatus,
+      priority,
+      totalPrice: laborPrice + repair.partsCost,
     },
   });
 

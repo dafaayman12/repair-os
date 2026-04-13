@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { AppShell } from "@/components/app-shell";
+import { Boxes, ClipboardList, DollarSign, Eye } from "lucide-react";
 import { createInventoryItem } from "../actions";
 
 export default async function NewInventoryItemPage() {
@@ -8,37 +10,66 @@ export default async function NewInventoryItemPage() {
   });
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-4xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">
-              Stock Management
-            </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
-              Add Inventory Item
-            </h1>
-          </div>
-
-          <Link
-            href="/inventory"
-            className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
-          >
-            Back to Inventory
-          </Link>
-        </div>
-
-        <form
-          action={createInventoryItem}
-          className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6"
+    <AppShell
+      section="Stock Management"
+      title="Add Inventory Item"
+      description="Register new stock with pricing, supplier, and storage details."
+      actions={
+        <Link
+          href="/inventory"
+          className="rounded-lg border border-blue-300/20 bg-[#112349] px-4 py-2 text-sm text-blue-100/80 transition hover:border-blue-300/45 hover:bg-[#173469]"
         >
+          Back to Inventory
+        </Link>
+      }
+      toolbar={
+        <>
+          <p className="text-xs uppercase tracking-[0.2em] text-blue-100/70">
+            Inventory Intake
+          </p>
+          <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-1.5 text-xs text-blue-100/65">
+            Modal-style Form
+          </div>
+        </>
+      }
+    >
+      <div className="mx-auto mb-4 max-w-4xl rounded-xl border border-blue-300/25 bg-[#112349] px-4 py-3">
+        <div className="flex flex-wrap gap-2">
+          {[
+            { label: "Basic", icon: ClipboardList },
+            { label: "Classification", icon: Boxes },
+            { label: "Pricing", icon: DollarSign },
+            { label: "Review", icon: Eye },
+          ].map((step, i) => (
+            <span
+              key={step.label}
+              className={`rounded-full border px-3 py-1 text-xs ${
+                i === 0
+                  ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
+                  : "border-blue-300/20 bg-[#0b1731] text-blue-100/65"
+              }`}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <step.icon size={12} />
+                {step.label}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <form
+        action={createInventoryItem}
+        className="mx-auto max-w-4xl space-y-5 rounded-xl border border-blue-300/25 bg-[#112349] p-5 shadow-[0_0_40px_rgba(37,99,235,0.12)]"
+      >
+        <section>
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm text-zinc-300">SKU</label>
               <input
                 name="sku"
                 required
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="IP12-OLED-BLK"
               />
             </div>
@@ -48,7 +79,7 @@ export default async function NewInventoryItemPage() {
               <input
                 name="name"
                 required
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="iPhone 12 OLED Screen"
               />
             </div>
@@ -58,7 +89,7 @@ export default async function NewInventoryItemPage() {
               <input
                 name="category"
                 required
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="Screen"
               />
             </div>
@@ -69,7 +100,7 @@ export default async function NewInventoryItemPage() {
               </label>
               <input
                 name="compatibleModels"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="iPhone 12"
               />
             </div>
@@ -81,7 +112,7 @@ export default async function NewInventoryItemPage() {
                 type="number"
                 min="0"
                 defaultValue="0"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
               />
             </div>
 
@@ -92,7 +123,7 @@ export default async function NewInventoryItemPage() {
                 type="number"
                 min="0"
                 defaultValue="0"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
               />
             </div>
 
@@ -104,7 +135,7 @@ export default async function NewInventoryItemPage() {
                 min="0"
                 step="0.01"
                 defaultValue="0"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
               />
             </div>
 
@@ -115,7 +146,7 @@ export default async function NewInventoryItemPage() {
                 type="number"
                 min="0"
                 step="0.01"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
                 placeholder="Optional"
               />
             </div>
@@ -124,7 +155,7 @@ export default async function NewInventoryItemPage() {
               <label className="mb-2 block text-sm text-zinc-300">Supplier</label>
               <select
                 name="supplierId"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
                 defaultValue=""
               >
                 <option value="">No supplier</option>
@@ -140,39 +171,39 @@ export default async function NewInventoryItemPage() {
               <label className="mb-2 block text-sm text-zinc-300">Location</label>
               <input
                 name="location"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="Shelf A3"
               />
             </div>
           </div>
+        </section>
 
-          <div className="mt-5">
-            <label className="mb-2 block text-sm text-zinc-300">Notes</label>
-            <textarea
-              name="notes"
-              rows={4}
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
-              placeholder="Extra details..."
-            />
-          </div>
+        <section className="border-t border-blue-300/20 pt-5">
+          <label className="mb-2 block text-sm text-zinc-300">Notes</label>
+          <textarea
+            name="notes"
+            rows={4}
+            className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+            placeholder="Extra details..."
+          />
+        </section>
 
-          <div className="mt-6 flex gap-3">
-            <button
-              type="submit"
-              className="rounded-xl bg-zinc-100 px-5 py-3 text-sm font-medium text-zinc-950 hover:bg-white"
-            >
-              Save Item
-            </button>
+        <div className="flex gap-3 border-t border-blue-300/20 pt-5">
+          <button
+            type="submit"
+            className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-5 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
+          >
+            Save Item
+          </button>
 
-            <Link
-              href="/inventory"
-              className="rounded-xl border border-zinc-800 px-5 py-3 text-sm text-zinc-300 hover:bg-zinc-900"
-            >
-              Cancel
-            </Link>
-          </div>
-        </form>
-      </div>
-    </main>
+          <Link
+            href="/inventory"
+            className="rounded-lg border border-blue-300/20 px-5 py-2.5 text-sm text-blue-100/75 transition hover:border-blue-300/45 hover:bg-[#0b1731]"
+          >
+            Cancel
+          </Link>
+        </div>
+      </form>
+    </AppShell>
   );
 }

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { AppShell } from "@/components/app-shell";
+import { Boxes, Filter, Search, Warehouse } from "lucide-react";
 
 export default async function InventoryPage() {
   const items = await prisma.inventoryItem.findMany({
@@ -10,79 +12,109 @@ export default async function InventoryPage() {
   });
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">
-              Stock Management
-            </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
-              Inventory
-            </h1>
-          </div>
+    <AppShell
+      section="Stock Management"
+      title="Inventory"
+      description="Control stock levels, pricing, and supplier coverage with clarity."
+      actions={
+        <>
+          <Link
+            href="/dashboard"
+            className="rounded-lg border border-blue-300/20 bg-[#112349] px-4 py-2 text-sm text-blue-100/80 transition hover:border-blue-300/45 hover:bg-[#173469]"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/inventory/new"
+            className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-4 py-2 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
+          >
+            Add Item
+          </Link>
+        </>
+      }
+    >
+      <div className="mb-4 flex flex-wrap gap-2">
+        {[
+          { label: "All Categories", icon: Boxes },
+          { label: "Low Stock", icon: Filter },
+          { label: "Out", icon: Warehouse },
+          { label: "Archived", icon: Boxes },
+        ].map((tab, i) => (
+          <span
+            key={tab.label}
+            className={`rounded-lg border px-3 py-1.5 text-xs ${
+              i === 0
+                ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
+                : "border-blue-300/20 bg-[#112349] text-blue-100/70"
+            }`}
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <tab.icon size={12} />
+              {tab.label}
+            </span>
+          </span>
+        ))}
+      </div>
 
-          <div className="flex gap-3">
-            <Link
-              href="/dashboard"
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/inventory/new"
-              className="rounded-lg border border-zinc-700 bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-white"
-            >
-              Add Item
-            </Link>
-          </div>
+      <div className="mb-4 grid gap-2 lg:grid-cols-[1fr_auto_auto_auto]">
+        <div className="relative">
+          <Search size={14} className="pointer-events-none absolute left-3 top-2.5 text-blue-100/45" />
+          <input
+            placeholder="Search SKU, name, brand..."
+            className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-9 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
+          />
         </div>
-
-        <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/70">
-          <div className="border-b border-zinc-800 px-6 py-4">
-            <h2 className="text-lg font-medium text-white">All Items</h2>
-            <p className="mt-1 text-sm text-zinc-400">
-              Screens, batteries, screws, flex cables, and consumables.
-            </p>
-          </div>
-
-          {items.length === 0 ? (
-            <div className="px-6 py-10 text-sm text-zinc-400">
-              No inventory items yet.
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-zinc-950/70 text-zinc-400">
-                  <tr>
-                    <th className="px-6 py-4 font-medium">Name</th>
-                    <th className="px-6 py-4 font-medium">Category</th>
-                    <th className="px-6 py-4 font-medium">Stock</th>
-                    <th className="px-6 py-4 font-medium">Buy Price</th>
-                    <th className="px-6 py-4 font-medium">Supplier</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-t border-zinc-800 text-zinc-200"
-                    >
-                      <td className="px-6 py-4">{item.name}</td>
-                      <td className="px-6 py-4">{item.category}</td>
-                      <td className="px-6 py-4">{item.quantityInStock}</td>
-                      <td className="px-6 py-4">{item.buyPrice}</td>
-                      <td className="px-6 py-4">
-                        {item.supplier?.name ?? "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+        <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
+          <option>All Categories</option>
+        </select>
+        <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
+          <option>All Conditions</option>
+        </select>
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-sm text-blue-100/65">
+          {items.length} items
         </div>
       </div>
-    </main>
+
+      <div className="overflow-hidden rounded-2xl border border-blue-300/20 bg-[#112349] shadow-[0_0_50px_rgba(37,99,235,0.12)]">
+        <div className="border-b border-blue-300/20 px-6 py-4">
+          <h2 className="text-lg font-medium text-white">All Items</h2>
+          <p className="mt-1 text-sm text-zinc-400">
+            Screens, batteries, screws, flex cables, and consumables.
+          </p>
+        </div>
+
+        {items.length === 0 ? (
+          <div className="px-6 py-10 text-sm text-zinc-400">No inventory items yet.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-[#0b1731] text-xs uppercase tracking-[0.14em] text-blue-100/55">
+                <tr>
+                  <th className="px-6 py-4 font-medium">Name</th>
+                  <th className="px-6 py-4 font-medium">Category</th>
+                  <th className="px-6 py-4 font-medium">Stock</th>
+                  <th className="px-6 py-4 font-medium">Buy Price</th>
+                  <th className="px-6 py-4 font-medium">Supplier</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="border-t border-blue-300/20 text-zinc-200 transition hover:bg-blue-500/5"
+                  >
+                    <td className="px-6 py-4">{item.name}</td>
+                    <td className="px-6 py-4">{item.category}</td>
+                    <td className="px-6 py-4">{item.quantityInStock}</td>
+                    <td className="px-6 py-4">{item.buyPrice}</td>
+                    <td className="px-6 py-4">{item.supplier?.name ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </AppShell>
   );
 }
