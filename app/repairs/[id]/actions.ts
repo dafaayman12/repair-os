@@ -109,3 +109,69 @@ export async function updateRepairStatus(formData: FormData) {
   revalidatePath(`/repairs/${repairId}`);
   revalidatePath("/repairs");
 }
+
+export async function removePartFromRepair(formData: FormData) {
+  const repairId = String(formData.get("repairId") ?? "").trim();
+  const partId = String(formData.get("partId") ?? "").trim();
+
+  if (!repairId || !partId) {
+    throw new Error("Repair and part are required.");
+  }
+
+  const repair = await prisma.repair.findUnique({
+    where: { id: repairId },
+    select: { id: true, laborPrice: true },
+  });
+
+  if (!repair) {
+    throw new Error("Repair not found.");
+  }
+
+  const part = await prisma.repairPartUsed.findUnique({
+    where: { id: partId },
+    select: {
+      id: true,
+      repairId: true,
+      inventoryItemId: true,
+      quantity: true,
+    },
+  });
+
+  if (!part || part.repairId !== repairId) {
+    throw new Error("Part not found for this repair.");
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.repairPartUsed.delete({
+      where: { id: partId },
+    });
+
+    await tx.inventoryItem.update({
+      where: { id: part.inventoryItemId },
+      data: {
+        quantityInStock: {
+          increment: part.quantity,
+        },
+      },
+    });
+
+    const parts = await tx.repairPartUsed.findMany({
+      where: { repairId },
+      select: { totalCost: true },
+    });
+
+    const partsCost = parts.reduce((sum, item) => sum + item.totalCost, 0);
+
+    await tx.repair.update({
+      where: { id: repairId },
+      data: {
+        partsCost,
+        totalPrice: repair.laborPrice + partsCost,
+      },
+    });
+  });
+
+  revalidatePath(`/repairs/${repairId}`);
+  revalidatePath("/repairs");
+  revalidatePath("/inventory");
+}

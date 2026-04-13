@@ -2,7 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/app-shell";
-import { addPartToRepair, updateRepairStatus } from "./actions";
+import {
+  addPartToRepair,
+  removePartFromRepair,
+  updateRepairStatus,
+} from "./actions";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -198,6 +202,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                     <th className="py-3 font-medium">Qty</th>
                     <th className="py-3 font-medium">Unit Cost</th>
                     <th className="py-3 font-medium">Total</th>
+                    <th className="py-3 font-medium">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,6 +215,18 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                       <td className="py-3">{part.quantity}</td>
                       <td className="py-3">{part.unitCost}</td>
                       <td className="py-3">{part.totalCost}</td>
+                      <td className="py-3">
+                        <form action={removePartFromRepair}>
+                          <input type="hidden" name="repairId" value={repair.id} />
+                          <input type="hidden" name="partId" value={part.id} />
+                          <button
+                            type="submit"
+                            className="rounded-lg border border-white/10 px-3 py-1 text-xs text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"
+                          >
+                            Remove
+                          </button>
+                        </form>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
