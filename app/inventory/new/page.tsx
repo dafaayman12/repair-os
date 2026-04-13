@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { AppShell } from "@/components/app-shell";
 import { createInventoryItem } from "../actions";
 
 export default async function NewInventoryItemPage() {
@@ -8,37 +9,41 @@ export default async function NewInventoryItemPage() {
   });
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-4xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">
-              Stock Management
-            </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
-              Add Inventory Item
-            </h1>
-          </div>
-
-          <Link
-            href="/inventory"
-            className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
-          >
-            Back to Inventory
-          </Link>
-        </div>
-
-        <form
-          action={createInventoryItem}
-          className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-6"
+    <AppShell
+      section="Stock Management"
+      title="Add Inventory Item"
+      description="Register new stock with pricing, supplier, and storage details."
+      actions={
+        <Link
+          href="/inventory"
+          className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-amber-200/35 hover:bg-zinc-900"
         >
+          Back to Inventory
+        </Link>
+      }
+      toolbar={
+        <>
+          <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+            Inventory Intake
+          </p>
+          <div className="rounded-xl border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-400">
+            Stock Form
+          </div>
+        </>
+      }
+    >
+      <form
+        action={createInventoryItem}
+        className="space-y-6 rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-7 shadow-[0_0_60px_rgba(251,146,60,0.08)]"
+      >
+        <section>
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm text-zinc-300">SKU</label>
               <input
                 name="sku"
                 required
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="IP12-OLED-BLK"
               />
             </div>
@@ -48,7 +53,7 @@ export default async function NewInventoryItemPage() {
               <input
                 name="name"
                 required
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="iPhone 12 OLED Screen"
               />
             </div>
@@ -58,7 +63,7 @@ export default async function NewInventoryItemPage() {
               <input
                 name="category"
                 required
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="Screen"
               />
             </div>
@@ -69,7 +74,7 @@ export default async function NewInventoryItemPage() {
               </label>
               <input
                 name="compatibleModels"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="iPhone 12"
               />
             </div>
@@ -81,7 +86,7 @@ export default async function NewInventoryItemPage() {
                 type="number"
                 min="0"
                 defaultValue="0"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
               />
             </div>
 
@@ -92,7 +97,7 @@ export default async function NewInventoryItemPage() {
                 type="number"
                 min="0"
                 defaultValue="0"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
               />
             </div>
 
@@ -104,7 +109,7 @@ export default async function NewInventoryItemPage() {
                 min="0"
                 step="0.01"
                 defaultValue="0"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
               />
             </div>
 
@@ -115,7 +120,7 @@ export default async function NewInventoryItemPage() {
                 type="number"
                 min="0"
                 step="0.01"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
                 placeholder="Optional"
               />
             </div>
@@ -124,7 +129,7 @@ export default async function NewInventoryItemPage() {
               <label className="mb-2 block text-sm text-zinc-300">Supplier</label>
               <select
                 name="supplierId"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
                 defaultValue=""
               >
                 <option value="">No supplier</option>
@@ -140,39 +145,39 @@ export default async function NewInventoryItemPage() {
               <label className="mb-2 block text-sm text-zinc-300">Location</label>
               <input
                 name="location"
-                className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+                className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
                 placeholder="Shelf A3"
               />
             </div>
           </div>
+        </section>
 
-          <div className="mt-5">
-            <label className="mb-2 block text-sm text-zinc-300">Notes</label>
-            <textarea
-              name="notes"
-              rows={4}
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
-              placeholder="Extra details..."
-            />
-          </div>
+        <section className="border-t border-white/10 pt-6">
+          <label className="mb-2 block text-sm text-zinc-300">Notes</label>
+          <textarea
+            name="notes"
+            rows={4}
+            className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-500"
+            placeholder="Extra details..."
+          />
+        </section>
 
-          <div className="mt-6 flex gap-3">
-            <button
-              type="submit"
-              className="rounded-xl bg-zinc-100 px-5 py-3 text-sm font-medium text-zinc-950 hover:bg-white"
-            >
-              Save Item
-            </button>
+        <div className="flex gap-3 border-t border-white/10 pt-6">
+          <button
+            type="submit"
+            className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-5 py-3 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+          >
+            Save Item
+          </button>
 
-            <Link
-              href="/inventory"
-              className="rounded-xl border border-zinc-800 px-5 py-3 text-sm text-zinc-300 hover:bg-zinc-900"
-            >
-              Cancel
-            </Link>
-          </div>
-        </form>
-      </div>
-    </main>
+          <Link
+            href="/inventory"
+            className="rounded-xl border border-white/10 px-5 py-3 text-sm text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"
+          >
+            Cancel
+          </Link>
+        </div>
+      </form>
+    </AppShell>
   );
 }
