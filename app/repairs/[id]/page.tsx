@@ -5,6 +5,7 @@ import { AppShell } from "@/components/app-shell";
 import {
   addPartToRepair,
   removePartFromRepair,
+  updateRepairDetails,
   updateRepairStatus,
 } from "./actions";
 
@@ -130,6 +131,92 @@ export default async function RepairDetailsPage({ params }: PageProps) {
               <p className="text-sm text-zinc-400">Diagnosis</p>
               <p className="mt-1 text-white">{repair.diagnosis ?? "—"}</p>
             </div>
+          </div>
+
+          <div className="mt-8 border-t border-white/10 pt-6">
+            <h3 className="text-sm font-medium text-white">Edit Repair</h3>
+
+            <form action={updateRepairDetails} className="mt-4 grid gap-4">
+              <input type="hidden" name="repairId" value={repair.id} />
+
+              <div>
+                <label className="mb-2 block text-sm text-zinc-300">Issue</label>
+                <input
+                  name="issue"
+                  required
+                  defaultValue={repair.issue}
+                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm text-zinc-300">
+                  Diagnosis
+                </label>
+                <textarea
+                  name="diagnosis"
+                  rows={4}
+                  defaultValue={repair.diagnosis ?? ""}
+                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                />
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <label className="mb-2 block text-sm text-zinc-300">
+                    Labor Price
+                  </label>
+                  <input
+                    name="laborPrice"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={repair.laborPrice}
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm text-zinc-300">
+                    Payment Status
+                  </label>
+                  <select
+                    name="paymentStatus"
+                    defaultValue={repair.paymentStatus}
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                  >
+                    <option value="UNPAID">UNPAID</option>
+                    <option value="PARTIAL">PARTIAL</option>
+                    <option value="PAID">PAID</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm text-zinc-300">
+                    Priority
+                  </label>
+                  <select
+                    name="priority"
+                    defaultValue={repair.priority}
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                  >
+                    <option value="LOW">LOW</option>
+                    <option value="NORMAL">NORMAL</option>
+                    <option value="HIGH">HIGH</option>
+                    <option value="URGENT">URGENT</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-5 py-3 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+                >
+                  Save Repair Changes
+                </button>
+              </div>
+            </form>
           </div>
         </section>
 

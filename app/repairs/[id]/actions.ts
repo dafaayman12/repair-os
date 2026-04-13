@@ -2,7 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { RepairStatus } from "@/app/generated/prisma/client";
+import {
+  PaymentStatus,
+  Priority,
+  RepairStatus,
+} from "@/app/generated/prisma/client";
 
 export async function addPartToRepair(formData: FormData) {
   const repairId = String(formData.get("repairId") ?? "").trim();
@@ -179,4 +183,66 @@ export async function removePartFromRepair(formData: FormData) {
   revalidatePath(`/repairs/${repairId}`);
   revalidatePath("/repairs");
   revalidatePath("/inventory");
+}
+
+export async function updateRepairDetails(formData: FormData) {
+  const repairId = String(formData.get("repairId") ?? "").trim();
+  const issue = String(formData.get("issue") ?? "").trim();
+  const diagnosisRaw = String(formData.get("diagnosis") ?? "").trim();
+  const laborPriceRaw = Number(formData.get("laborPrice") ?? 0);
+  const paymentStatusRaw = String(formData.get("paymentStatus") ?? "").trim();
+  const priorityRaw = String(formData.get("priority") ?? "").trim();
+
+  if (!repairId || !issue) {
+    throw new Error("Repair and issue are required.");
+  }
+
+  if (Number.isNaN(laborPriceRaw) || laborPriceRaw < 0) {
+    throw new Error("Labor price must be a valid non-negative number.");
+  }
+
+  const allowedPaymentStatuses = ["UNPAID", "PARTIAL", "PAID"] as const;
+  if (
+    !allowedPaymentStatuses.includes(
+      paymentStatusRaw as (typeof allowedPaymentStatuses)[number]
+    )
+  ) {
+    throw new Error("Invalid payment status.");
+  }
+
+  const allowedPriorities = ["LOW", "NORMAL", "HIGH", "URGENT"] as const;
+  if (
+    !allowedPriorities.includes(priorityRaw as (typeof allowedPriorities)[number])
+  ) {
+    throw new Error("Invalid priority.");
+  }
+
+  const repair = await prisma.repair.findUnique({
+    where: { id: repairId },
+    select: { id: true, partsCost: true },
+  });
+
+  if (!repair) {
+    throw new Error("Repair not found.");
+  }
+
+  const laborPrice = laborPriceRaw;
+  const paymentStatus = paymentStatusRaw as PaymentStatus;
+  const priority = priorityRaw as Priority;
+  const diagnosis = diagnosisRaw || null;
+
+  await prisma.repair.update({
+    where: { id: repairId },
+    data: {
+      issue,
+      diagnosis,
+      laborPrice,
+      paymentStatus,
+      priority,
+      totalPrice: laborPrice + repair.partsCost,
+    },
+  });
+
+  revalidatePath(`/repairs/${repairId}`);
+  revalidatePath("/repairs");
 }
