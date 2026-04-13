@@ -30,6 +30,16 @@ export default function HomePage() {
             </Link>
 
             <Link
+              href="/repairs"
+              className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+            >
+              <div className="text-lg font-medium text-white">Repairs</div>
+              <div className="mt-1 text-sm text-zinc-400">
+                Track repair tickets, status, and totals.
+              </div>
+            </Link>
+
+            <Link
               href="/inventory"
               className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
             >
