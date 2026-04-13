@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
+import { CircleCheckBig, ClipboardList, Smartphone, UserRound } from "lucide-react";
 import { createRepair } from "../actions";
 
 export default function NewRepairPage() {
@@ -29,16 +30,24 @@ export default function NewRepairPage() {
     >
       <div className="mx-auto mb-4 max-w-4xl rounded-xl border border-blue-300/25 bg-[#112349] px-4 py-3">
         <div className="flex flex-wrap items-center gap-2">
-          {["Customer", "Device", "Details", "Confirm"].map((step, i) => (
+          {[
+            { label: "Customer", icon: UserRound },
+            { label: "Device", icon: Smartphone },
+            { label: "Details", icon: ClipboardList },
+            { label: "Confirm", icon: CircleCheckBig },
+          ].map((step, i) => (
             <span
-              key={step}
+              key={step.label}
               className={`rounded-full border px-3 py-1 text-xs ${
                 i === 0
                   ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
                   : "border-blue-300/20 bg-[#0b1731] text-blue-100/65"
               }`}
             >
-              {step}
+              <span className="inline-flex items-center gap-1.5">
+                <step.icon size={12} />
+                {step.label}
+              </span>
             </span>
           ))}
         </div>

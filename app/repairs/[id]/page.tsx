@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/app-shell";
+import { PencilLine, Plus, Trash2 } from "lucide-react";
 import {
   addPartToRepair,
   removePartFromRepair,
@@ -149,7 +150,12 @@ export default async function RepairDetailsPage({ params }: PageProps) {
           </div>
 
           <div className="mt-6 border-t border-blue-300/20 pt-5">
-            <h3 className="text-sm font-medium text-white">Edit Repair</h3>
+            <h3 className="text-sm font-medium text-white">
+              <span className="inline-flex items-center gap-1.5">
+                <PencilLine size={14} className="text-blue-200/70" />
+                Edit Repair
+              </span>
+            </h3>
 
             <form action={updateRepairDetails} className="mt-4 grid gap-4">
               <input type="hidden" name="repairId" value={repair.id} />
@@ -334,7 +340,10 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                             type="submit"
                             className="rounded-lg border border-white/10 px-3 py-1 text-xs text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"
                           >
-                            Remove
+                            <span className="inline-flex items-center gap-1">
+                              <Trash2 size={12} />
+                              Remove
+                            </span>
                           </button>
                         </form>
                       </td>
@@ -387,7 +396,10 @@ export default async function RepairDetailsPage({ params }: PageProps) {
               type="submit"
               className="w-full rounded-lg border border-blue-300/40 bg-blue-500/20 px-5 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
             >
-              Add Part to Repair
+              <span className="inline-flex items-center gap-1.5">
+                <Plus size={14} />
+                Add Part to Repair
+              </span>
             </button>
           </form>
         </section>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/app-shell";
+import { Boxes, ClipboardList, DollarSign, Eye } from "lucide-react";
 import { createInventoryItem } from "../actions";
 
 export default async function NewInventoryItemPage() {
@@ -34,16 +35,24 @@ export default async function NewInventoryItemPage() {
     >
       <div className="mx-auto mb-4 max-w-4xl rounded-xl border border-blue-300/25 bg-[#112349] px-4 py-3">
         <div className="flex flex-wrap gap-2">
-          {["Basic", "Classification", "Pricing", "Review"].map((step, i) => (
+          {[
+            { label: "Basic", icon: ClipboardList },
+            { label: "Classification", icon: Boxes },
+            { label: "Pricing", icon: DollarSign },
+            { label: "Review", icon: Eye },
+          ].map((step, i) => (
             <span
-              key={step}
+              key={step.label}
               className={`rounded-full border px-3 py-1 text-xs ${
                 i === 0
                   ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
                   : "border-blue-300/20 bg-[#0b1731] text-blue-100/65"
               }`}
             >
-              {step}
+              <span className="inline-flex items-center gap-1.5">
+                <step.icon size={12} />
+                {step.label}
+              </span>
             </span>
           ))}
         </div>

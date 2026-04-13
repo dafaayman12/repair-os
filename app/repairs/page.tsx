@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/app-shell";
+import { AlertCircle, Search, SlidersHorizontal, Wrench } from "lucide-react";
 
 function getStatusBadgeClass(status: string) {
   switch (status) {
@@ -53,27 +54,37 @@ export default async function RepairsPage() {
       }
     >
       <div className="mb-4 flex flex-wrap gap-2">
-        {["All Active", "Work Queue", "Customer Waiting", "Completed"].map(
-          (tab, i) => (
+        {[
+          { label: "All Active", icon: Wrench },
+          { label: "Work Queue", icon: SlidersHorizontal },
+          { label: "Customer Waiting", icon: AlertCircle },
+          { label: "Completed", icon: Wrench },
+        ].map((tab, i) => (
             <span
-              key={tab}
+              key={tab.label}
               className={`rounded-lg border px-3 py-1.5 text-xs ${
                 i === 0
                   ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
                   : "border-blue-300/20 bg-[#112349] text-blue-100/70"
               }`}
             >
-              {tab}
+              <span className="inline-flex items-center gap-1.5">
+                <tab.icon size={12} />
+                {tab.label}
+              </span>
             </span>
           )
         )}
       </div>
 
       <div className="mb-4 grid gap-2 lg:grid-cols-[1fr_auto_auto_auto]">
-        <input
-          placeholder="Search orders..."
-          className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
-        />
+        <div className="relative">
+          <Search size={14} className="pointer-events-none absolute left-3 top-2.5 text-blue-100/45" />
+          <input
+            placeholder="Search orders..."
+            className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-9 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
+          />
+        </div>
         <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
           <option>All Priorities</option>
         </select>

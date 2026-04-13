@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/app-shell";
+import { BarChart3, Search, Users } from "lucide-react";
 
 export default async function CustomersPage() {
   const customers = await prisma.customer.findMany({
@@ -41,25 +42,34 @@ export default async function CustomersPage() {
       }
     >
       <div className="mb-4 flex flex-wrap gap-2">
-        {["All Customers", "Insights"].map((tab, i) => (
+        {[
+          { label: "All Customers", icon: Users },
+          { label: "Insights", icon: BarChart3 },
+        ].map((tab, i) => (
           <span
-            key={tab}
+            key={tab.label}
             className={`rounded-lg border px-3 py-1.5 text-xs ${
               i === 0
                 ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
                 : "border-blue-300/20 bg-[#112349] text-blue-100/70"
             }`}
           >
-            {tab}
+            <span className="inline-flex items-center gap-1.5">
+              <tab.icon size={12} />
+              {tab.label}
+            </span>
           </span>
         ))}
       </div>
 
       <div className="mb-4 grid gap-2 md:grid-cols-[1fr_auto]">
-        <input
-          placeholder="Search customers..."
-          className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
-        />
+        <div className="relative">
+          <Search size={14} className="pointer-events-none absolute left-3 top-2.5 text-blue-100/45" />
+          <input
+            placeholder="Search customers..."
+            className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-9 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
+          />
+        </div>
         <button className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-4 py-2 text-sm text-blue-100">
           Add Customer
         </button>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { prisma } from "@/lib/prisma";
+import { Activity, CircleDollarSign, Clock3, Users, Wrench } from "lucide-react";
 
 const workflow = [
   { label: "New", key: "NEW", hint: "Recently created tickets" },
@@ -157,16 +158,24 @@ export default async function DashboardPage() {
     >
       <div className="space-y-6">
         <section className="flex flex-wrap gap-2">
-          {["Overview", "Queue", "Customers", "Revenue"].map((tab, index) => (
+          {[
+            { label: "Overview", icon: Activity },
+            { label: "Queue", icon: Wrench },
+            { label: "Customers", icon: Users },
+            { label: "Revenue", icon: CircleDollarSign },
+          ].map((tab, index) => (
             <span
-              key={tab}
+              key={tab.label}
               className={`rounded-lg border px-3 py-1.5 text-xs ${
                 index === 0
                   ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
                   : "border-blue-300/20 bg-[#112349] text-blue-100/70"
               }`}
             >
-              {tab}
+              <span className="inline-flex items-center gap-1.5">
+                <tab.icon size={12} />
+                {tab.label}
+              </span>
             </span>
           ))}
         </section>
@@ -230,7 +239,12 @@ export default async function DashboardPage() {
                         <td className="px-6 py-4">
                           {repair.device.brand} {repair.device.model}
                         </td>
-                        <td className="px-6 py-4">{repair.status}</td>
+                        <td className="px-6 py-4">
+                          <span className="inline-flex items-center gap-1">
+                            <Clock3 size={12} className="text-blue-200/60" />
+                            {repair.status}
+                          </span>
+                        </td>
                         <td className="px-6 py-4">{repair.totalPrice}</td>
                       </tr>
                     ))}

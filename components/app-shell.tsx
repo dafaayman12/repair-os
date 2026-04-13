@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import {
+  BarChart3,
+  Home,
+  Package,
+  Settings2,
+  Users,
+  Wrench,
+} from "lucide-react";
 
 type AppShellProps = {
   section: string;
@@ -11,11 +19,11 @@ type AppShellProps = {
 };
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/repairs", label: "Repairs" },
-  { href: "/inventory", label: "Inventory" },
-  { href: "/customers", label: "Customers" },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
+  { href: "/repairs", label: "Repairs", icon: Wrench },
+  { href: "/inventory", label: "Inventory", icon: Package },
+  { href: "/customers", label: "Customers", icon: Users },
 ];
 
 export function AppShell({
@@ -53,12 +61,19 @@ export function AppShell({
                 className="group block rounded-xl border border-blue-300/15 bg-[#0d1a36] px-4 py-2.5 text-sm text-blue-100/80 transition hover:border-blue-300/50 hover:bg-[#112349] hover:text-white"
               >
                 <span className="inline-flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-300/50 transition group-hover:bg-blue-300" />
+                  <link.icon size={14} className="text-blue-200/65 transition group-hover:text-blue-200" />
                   {link.label}
                 </span>
               </Link>
             ))}
           </nav>
+
+          <div className="mt-8 rounded-xl border border-blue-300/15 bg-[#0d1a36] px-4 py-3 text-xs text-blue-100/60">
+            <span className="inline-flex items-center gap-2">
+              <Settings2 size={13} />
+              Settings
+            </span>
+          </div>
         </aside>
 
         <div className="flex min-h-screen flex-1 flex-col">
