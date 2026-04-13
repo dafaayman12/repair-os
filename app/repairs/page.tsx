@@ -5,19 +5,19 @@ import { AppShell } from "@/components/app-shell";
 function getStatusBadgeClass(status: string) {
   switch (status) {
     case "NEW":
-      return "border-zinc-500/40 bg-zinc-800/70 text-zinc-100";
+      return "border-zinc-500/40 bg-zinc-800/80 text-zinc-100";
     case "DIAGNOSING":
-      return "border-blue-500/30 bg-blue-950/70 text-blue-200";
+      return "border-blue-500/35 bg-blue-950/80 text-blue-200";
     case "WAITING_PART":
-      return "border-amber-500/30 bg-amber-950/70 text-amber-200";
+      return "border-amber-500/35 bg-amber-950/80 text-amber-200";
     case "IN_PROGRESS":
-      return "border-cyan-500/30 bg-cyan-950/70 text-cyan-200";
+      return "border-cyan-500/35 bg-cyan-950/80 text-cyan-200";
     case "READY":
-      return "border-emerald-500/30 bg-emerald-950/70 text-emerald-200";
+      return "border-emerald-500/35 bg-emerald-950/80 text-emerald-200";
     case "CLOSED":
-      return "border-purple-500/30 bg-purple-950/70 text-purple-200";
+      return "border-purple-500/35 bg-purple-950/80 text-purple-200";
     default:
-      return "border-zinc-500/40 bg-zinc-800/70 text-zinc-100";
+      return "border-zinc-500/40 bg-zinc-800/80 text-zinc-100";
   }
 }
 
@@ -52,8 +52,8 @@ export default async function RepairsPage() {
         </>
       }
     >
-      <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 shadow-[0_0_60px_rgba(251,191,36,0.04)]">
-        <div className="border-b border-white/10 px-6 py-4">
+      <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 shadow-[0_0_60px_rgba(251,146,60,0.08)]">
+        <div className="border-b border-white/10 px-6 py-5">
           <h2 className="text-lg font-medium text-white">All Repairs</h2>
           <p className="mt-1 text-sm text-zinc-400">
             Prioritize jobs quickly with cleaner status visibility.
@@ -65,7 +65,7 @@ export default async function RepairsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-zinc-950/80 text-zinc-400">
+              <thead className="bg-zinc-950/80 text-xs uppercase tracking-[0.14em] text-zinc-500">
                 <tr>
                   <th className="px-6 py-4 font-medium">Repair No</th>
                   <th className="px-6 py-4 font-medium">Customer</th>
@@ -77,7 +77,10 @@ export default async function RepairsPage() {
               </thead>
               <tbody>
                 {repairs.map((repair) => (
-                  <tr key={repair.id} className="border-t border-white/10 text-zinc-200">
+                  <tr
+                    key={repair.id}
+                    className="border-t border-white/10 text-zinc-200 transition hover:bg-white/[0.02]"
+                  >
                     <td className="px-6 py-4">
                       <Link
                         href={`/repairs/${repair.id}`}
@@ -104,7 +107,7 @@ export default async function RepairsPage() {
 
                     <td className="px-6 py-4">
                       <span
-                        className={`rounded-full border px-3 py-1 text-xs font-medium ${getStatusBadgeClass(
+                        className={`rounded-full border px-3 py-1 text-[11px] font-medium tracking-wide ${getStatusBadgeClass(
                           repair.status
                         )}`}
                       >

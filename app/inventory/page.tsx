@@ -32,8 +32,8 @@ export default async function InventoryPage() {
         </>
       }
     >
-      <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 shadow-[0_0_60px_rgba(251,191,36,0.04)]">
-        <div className="border-b border-white/10 px-6 py-4">
+      <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 shadow-[0_0_60px_rgba(251,146,60,0.08)]">
+        <div className="border-b border-white/10 px-6 py-5">
           <h2 className="text-lg font-medium text-white">All Items</h2>
           <p className="mt-1 text-sm text-zinc-400">
             Screens, batteries, screws, flex cables, and consumables.
@@ -45,7 +45,7 @@ export default async function InventoryPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-zinc-950/80 text-zinc-400">
+              <thead className="bg-zinc-950/80 text-xs uppercase tracking-[0.14em] text-zinc-500">
                 <tr>
                   <th className="px-6 py-4 font-medium">Name</th>
                   <th className="px-6 py-4 font-medium">Category</th>
@@ -56,7 +56,10 @@ export default async function InventoryPage() {
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.id} className="border-t border-white/10 text-zinc-200">
+                  <tr
+                    key={item.id}
+                    className="border-t border-white/10 text-zinc-200 transition hover:bg-white/[0.02]"
+                  >
                     <td className="px-6 py-4">{item.name}</td>
                     <td className="px-6 py-4">{item.category}</td>
                     <td className="px-6 py-4">{item.quantityInStock}</td>
