@@ -47,6 +47,22 @@ export default async function InventoryPage() {
         ))}
       </div>
 
+      <div className="mb-4 grid gap-2 lg:grid-cols-[1fr_auto_auto_auto]">
+        <input
+          placeholder="Search SKU, name, brand..."
+          className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
+        />
+        <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
+          <option>All Categories</option>
+        </select>
+        <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
+          <option>All Conditions</option>
+        </select>
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-sm text-blue-100/65">
+          {items.length} items
+        </div>
+      </div>
+
       <div className="overflow-hidden rounded-2xl border border-blue-300/20 bg-[#112349] shadow-[0_0_50px_rgba(37,99,235,0.12)]">
         <div className="border-b border-blue-300/20 px-6 py-4">
           <h2 className="text-lg font-medium text-white">All Items</h2>

@@ -69,6 +69,22 @@ export default async function RepairsPage() {
         )}
       </div>
 
+      <div className="mb-4 grid gap-2 lg:grid-cols-[1fr_auto_auto_auto]">
+        <input
+          placeholder="Search orders..."
+          className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/80 outline-none placeholder:text-blue-100/40"
+        />
+        <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
+          <option>All Priorities</option>
+        </select>
+        <select className="rounded-lg border border-blue-300/20 bg-[#0b1731] px-3 py-2 text-sm text-blue-100/75 outline-none">
+          <option>All Services</option>
+        </select>
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-sm text-blue-100/65">
+          {repairs.length} in queue
+        </div>
+      </div>
+
       <div className="overflow-hidden rounded-2xl border border-blue-300/20 bg-[#112349] shadow-[0_0_50px_rgba(37,99,235,0.12)]">
         <div className="border-b border-blue-300/20 px-6 py-4">
           <h2 className="text-lg font-medium text-white">All Repairs</h2>

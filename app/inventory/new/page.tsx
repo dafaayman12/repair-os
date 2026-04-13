@@ -16,25 +16,42 @@ export default async function NewInventoryItemPage() {
       actions={
         <Link
           href="/inventory"
-          className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-amber-200/35 hover:bg-zinc-900"
+          className="rounded-lg border border-blue-300/20 bg-[#112349] px-4 py-2 text-sm text-blue-100/80 transition hover:border-blue-300/45 hover:bg-[#173469]"
         >
           Back to Inventory
         </Link>
       }
       toolbar={
         <>
-          <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+          <p className="text-xs uppercase tracking-[0.2em] text-blue-100/70">
             Inventory Intake
           </p>
-          <div className="rounded-xl border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-400">
-            Stock Form
+          <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-1.5 text-xs text-blue-100/65">
+            Modal-style Form
           </div>
         </>
       }
     >
+      <div className="mx-auto mb-4 max-w-4xl rounded-xl border border-blue-300/25 bg-[#112349] px-4 py-3">
+        <div className="flex flex-wrap gap-2">
+          {["Basic", "Classification", "Pricing", "Review"].map((step, i) => (
+            <span
+              key={step}
+              className={`rounded-full border px-3 py-1 text-xs ${
+                i === 0
+                  ? "border-blue-300/45 bg-blue-500/20 text-blue-100"
+                  : "border-blue-300/20 bg-[#0b1731] text-blue-100/65"
+              }`}
+            >
+              {step}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <form
         action={createInventoryItem}
-        className="space-y-6 rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-7 shadow-[0_0_60px_rgba(251,146,60,0.08)]"
+        className="mx-auto max-w-4xl space-y-5 rounded-xl border border-blue-300/25 bg-[#112349] p-5 shadow-[0_0_40px_rgba(37,99,235,0.12)]"
       >
         <section>
           <div className="grid gap-5 md:grid-cols-2">
@@ -152,7 +169,7 @@ export default async function NewInventoryItemPage() {
           </div>
         </section>
 
-        <section className="border-t border-white/10 pt-6">
+        <section className="border-t border-blue-300/20 pt-5">
           <label className="mb-2 block text-sm text-zinc-300">Notes</label>
           <textarea
             name="notes"
@@ -162,17 +179,17 @@ export default async function NewInventoryItemPage() {
           />
         </section>
 
-        <div className="flex gap-3 border-t border-white/10 pt-6">
+        <div className="flex gap-3 border-t border-blue-300/20 pt-5">
           <button
             type="submit"
-            className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-5 py-3 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+            className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-5 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
           >
             Save Item
           </button>
 
           <Link
             href="/inventory"
-            className="rounded-xl border border-white/10 px-5 py-3 text-sm text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"
+            className="rounded-lg border border-blue-300/20 px-5 py-2.5 text-sm text-blue-100/75 transition hover:border-blue-300/45 hover:bg-[#0b1731]"
           >
             Cancel
           </Link>

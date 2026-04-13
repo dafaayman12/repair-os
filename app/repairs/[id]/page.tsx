@@ -70,24 +70,39 @@ export default async function RepairDetailsPage({ params }: PageProps) {
       actions={
         <Link
           href="/repairs"
-          className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-amber-200/35 hover:bg-zinc-900"
+          className="rounded-lg border border-blue-300/20 bg-[#112349] px-4 py-2 text-sm text-blue-100/80 transition hover:border-blue-300/45 hover:bg-[#173469]"
         >
           Back to Repairs
         </Link>
       }
       toolbar={
         <>
-          <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+          <p className="text-xs uppercase tracking-[0.2em] text-blue-100/70">
             Repair Ticket
           </p>
-          <div className="rounded-xl border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-xs text-zinc-400">
+          <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-1.5 text-xs text-blue-100/65">
             {repair.status}
           </div>
         </>
       }
     >
+      <div className="mb-4 grid gap-2 md:grid-cols-4">
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-xs text-blue-100/75">
+          Status: {repair.status}
+        </div>
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-xs text-blue-100/75">
+          Priority: {repair.priority}
+        </div>
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-xs text-blue-100/75">
+          Payment: {repair.paymentStatus}
+        </div>
+        <div className="rounded-lg border border-blue-300/20 bg-[#112349] px-3 py-2 text-xs text-blue-100/75">
+          Total: {repair.totalPrice}
+        </div>
+      </div>
+
       <div className="grid gap-6 xl:grid-cols-3">
-        <section className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 xl:col-span-2">
+        <section className="rounded-2xl border border-blue-300/20 bg-[#112349] p-5 xl:col-span-2">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-lg font-medium text-white">Repair Details</h2>
             <span
@@ -133,7 +148,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-8 border-t border-white/10 pt-6">
+          <div className="mt-6 border-t border-blue-300/20 pt-5">
             <h3 className="text-sm font-medium text-white">Edit Repair</h3>
 
             <form action={updateRepairDetails} className="mt-4 grid gap-4">
@@ -145,7 +160,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                   name="issue"
                   required
                   defaultValue={repair.issue}
-                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                  className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-2.5 text-sm text-white outline-none"
                 />
               </div>
 
@@ -157,7 +172,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                   name="diagnosis"
                   rows={4}
                   defaultValue={repair.diagnosis ?? ""}
-                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                  className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-2.5 text-sm text-white outline-none"
                 />
               </div>
 
@@ -172,7 +187,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                     min="0"
                     step="0.01"
                     defaultValue={repair.laborPrice}
-                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                    className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-2.5 text-sm text-white outline-none"
                   />
                 </div>
 
@@ -183,7 +198,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                   <select
                     name="paymentStatus"
                     defaultValue={repair.paymentStatus}
-                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                    className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-2.5 text-sm text-white outline-none"
                   >
                     <option value="UNPAID">UNPAID</option>
                     <option value="PARTIAL">PARTIAL</option>
@@ -198,7 +213,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                   <select
                     name="priority"
                     defaultValue={repair.priority}
-                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                    className="w-full rounded-lg border border-blue-300/20 bg-[#0b1731] px-4 py-2.5 text-sm text-white outline-none"
                   >
                     <option value="LOW">LOW</option>
                     <option value="NORMAL">NORMAL</option>
@@ -211,7 +226,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
               <div>
                 <button
                   type="submit"
-                  className="rounded-xl border border-amber-200/35 bg-amber-300/10 px-5 py-3 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+                  className="rounded-lg border border-blue-300/40 bg-blue-500/20 px-5 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
                 >
                   Save Repair Changes
                 </button>
@@ -263,7 +278,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
 
               <button
                 type="submit"
-                className="w-full rounded-xl border border-amber-200/35 bg-amber-300/10 px-5 py-3 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+                className="w-full rounded-lg border border-blue-300/40 bg-blue-500/20 px-5 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
               >
                 Update Status
               </button>
@@ -370,7 +385,7 @@ export default async function RepairDetailsPage({ params }: PageProps) {
 
             <button
               type="submit"
-              className="w-full rounded-xl border border-amber-200/35 bg-amber-300/10 px-5 py-3 text-sm font-medium text-amber-100 transition hover:bg-amber-300/20"
+              className="w-full rounded-lg border border-blue-300/40 bg-blue-500/20 px-5 py-2.5 text-sm font-medium text-blue-100 transition hover:bg-blue-500/30"
             >
               Add Part to Repair
             </button>
