@@ -216,9 +216,18 @@ export default async function RepairDetailsPage({ params }: PageProps) {
                       <td className="py-3">{part.unitCost}</td>
                       <td className="py-3">{part.totalCost}</td>
                       <td className="py-3">
-                        <form action={removePartFromRepair}>
+                        <form action={removePartFromRepair} className="space-y-2">
                           <input type="hidden" name="repairId" value={repair.id} />
                           <input type="hidden" name="partId" value={part.id} />
+                          <label className="flex items-center gap-2 text-xs text-zinc-400">
+                            <input
+                              type="checkbox"
+                              name="confirmRemove"
+                              value="true"
+                              className="h-3.5 w-3.5 rounded border border-white/15 bg-zinc-950"
+                            />
+                            Confirm
+                          </label>
                           <button
                             type="submit"
                             className="rounded-lg border border-white/10 px-3 py-1 text-xs text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"

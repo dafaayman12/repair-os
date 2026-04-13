@@ -113,9 +113,14 @@ export async function updateRepairStatus(formData: FormData) {
 export async function removePartFromRepair(formData: FormData) {
   const repairId = String(formData.get("repairId") ?? "").trim();
   const partId = String(formData.get("partId") ?? "").trim();
+  const confirmRemove = String(formData.get("confirmRemove") ?? "").trim();
 
   if (!repairId || !partId) {
     throw new Error("Repair and part are required.");
+  }
+
+  if (confirmRemove !== "true") {
+    throw new Error("Please confirm removal before continuing.");
   }
 
   const repair = await prisma.repair.findUnique({
