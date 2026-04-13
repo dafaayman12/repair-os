@@ -4,12 +4,12 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6">
-        <div className="w-full max-w-3xl rounded-2xl border border-zinc-800 bg-zinc-900/70 p-10 shadow-2xl">
-          <div className="mb-8">
-            <p className="mb-2 text-sm uppercase tracking-[0.2em] text-zinc-500">
+        <div className="w-full max-w-4xl rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-10 shadow-[0_0_50px_rgba(24,24,27,0.45)]">
+          <div className="mb-10">
+            <p className="mb-2 text-xs uppercase tracking-[0.24em] text-zinc-500">
               Local Repair Shop Manager
             </p>
-            <h1 className="text-4xl font-semibold tracking-tight text-white">
+            <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
               RepairOS
             </h1>
             <p className="mt-4 max-w-2xl text-zinc-400">
@@ -21,7 +21,7 @@ export default function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2">
             <Link
               href="/dashboard"
-              className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+              className="rounded-2xl border border-white/10 bg-zinc-950/80 px-5 py-5 transition hover:-translate-y-0.5 hover:border-zinc-500 hover:bg-zinc-900"
             >
               <div className="text-lg font-medium text-white">Dashboard</div>
               <div className="mt-1 text-sm text-zinc-400">
@@ -31,7 +31,7 @@ export default function HomePage() {
 
             <Link
               href="/repairs"
-              className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+              className="rounded-2xl border border-white/10 bg-zinc-950/80 px-5 py-5 transition hover:-translate-y-0.5 hover:border-zinc-500 hover:bg-zinc-900"
             >
               <div className="text-lg font-medium text-white">Repairs</div>
               <div className="mt-1 text-sm text-zinc-400">
@@ -41,7 +41,7 @@ export default function HomePage() {
 
             <Link
               href="/inventory"
-              className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+              className="rounded-2xl border border-white/10 bg-zinc-950/80 px-5 py-5 transition hover:-translate-y-0.5 hover:border-zinc-500 hover:bg-zinc-900"
             >
               <div className="text-lg font-medium text-white">Inventory</div>
               <div className="mt-1 text-sm text-zinc-400">
@@ -51,7 +51,7 @@ export default function HomePage() {
 
             <Link
               href="/customers"
-              className="rounded-xl border border-zinc-800 bg-zinc-950 px-5 py-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+              className="rounded-2xl border border-white/10 bg-zinc-950/80 px-5 py-5 transition hover:-translate-y-0.5 hover:border-zinc-500 hover:bg-zinc-900"
             >
               <div className="text-lg font-medium text-white">Customers</div>
               <div className="mt-1 text-sm text-zinc-400">

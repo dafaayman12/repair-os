@@ -10,13 +10,13 @@ const cards = [
 export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <div className="mb-10 flex items-center justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">
+            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">
               Operations
             </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">
               Dashboard
             </h1>
           </div>
@@ -24,25 +24,25 @@ export default function DashboardPage() {
           <div className="flex gap-3">
             <Link
               href="/"
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
+              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
             >
               Home
             </Link>
             <Link
               href="/customers"
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
+              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
             >
               Customers
             </Link>
             <Link
               href="/repairs"
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
+              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
             >
               Repairs
             </Link>
             <Link
               href="/inventory"
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
+              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
             >
               Inventory
             </Link>
@@ -53,13 +53,13 @@ export default function DashboardPage() {
           {cards.map((card) => (
             <div
               key={card.title}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-5"
+              className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.02)]"
             >
-              <p className="text-sm text-zinc-400">{card.title}</p>
-              <p className="mt-3 text-3xl font-semibold text-white">
+              <p className="text-sm tracking-wide text-zinc-400">{card.title}</p>
+              <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
                 {card.value}
               </p>
-              <p className="mt-2 text-sm text-zinc-500">{card.hint}</p>
+              <p className="mt-3 text-sm text-zinc-500">{card.hint}</p>
             </div>
           ))}
         </div>

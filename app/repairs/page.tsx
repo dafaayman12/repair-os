@@ -4,19 +4,19 @@ import { prisma } from "@/lib/prisma";
 function getStatusBadgeClass(status: string) {
   switch (status) {
     case "NEW":
-      return "border-zinc-700 bg-zinc-800 text-zinc-100";
+      return "border-zinc-500/40 bg-zinc-800/70 text-zinc-100";
     case "DIAGNOSING":
-      return "border-blue-900 bg-blue-950 text-blue-200";
+      return "border-blue-500/30 bg-blue-950/70 text-blue-200";
     case "WAITING_PART":
-      return "border-amber-900 bg-amber-950 text-amber-200";
+      return "border-amber-500/30 bg-amber-950/70 text-amber-200";
     case "IN_PROGRESS":
-      return "border-cyan-900 bg-cyan-950 text-cyan-200";
+      return "border-cyan-500/30 bg-cyan-950/70 text-cyan-200";
     case "READY":
-      return "border-emerald-900 bg-emerald-950 text-emerald-200";
+      return "border-emerald-500/30 bg-emerald-950/70 text-emerald-200";
     case "CLOSED":
-      return "border-purple-900 bg-purple-950 text-purple-200";
+      return "border-purple-500/30 bg-purple-950/70 text-purple-200";
     default:
-      return "border-zinc-700 bg-zinc-800 text-zinc-100";
+      return "border-zinc-500/40 bg-zinc-800/70 text-zinc-100";
   }
 }
 
@@ -31,13 +31,13 @@ export default async function RepairsPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <div className="mb-10 flex items-center justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">
+            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">
               Repair Workflow
             </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">
               Repairs
             </h1>
           </div>
@@ -45,21 +45,21 @@ export default async function RepairsPage() {
           <div className="flex gap-3">
             <Link
               href="/dashboard"
-              className="rounded-lg border border-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900"
+              className="rounded-xl border border-white/10 bg-zinc-900/60 px-4 py-2 text-sm text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
             >
               Dashboard
             </Link>
             <Link
               href="/repairs/new"
-              className="rounded-lg border border-zinc-700 bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-white"
+              className="rounded-xl border border-cyan-300/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-100 transition hover:bg-cyan-300/20"
             >
               New Repair
             </Link>
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/70">
-          <div className="border-b border-zinc-800 px-6 py-4">
+        <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-950 shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+          <div className="border-b border-white/10 px-6 py-4">
             <h2 className="text-lg font-medium text-white">All Repairs</h2>
             <p className="mt-1 text-sm text-zinc-400">
               Track tickets, customers, devices, and pricing.
@@ -73,7 +73,7 @@ export default async function RepairsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-zinc-950/70 text-zinc-400">
+                <thead className="bg-zinc-950/80 text-zinc-400">
                   <tr>
                     <th className="px-6 py-4 font-medium">Repair No</th>
                     <th className="px-6 py-4 font-medium">Customer</th>
@@ -87,7 +87,7 @@ export default async function RepairsPage() {
                   {repairs.map((repair) => (
                     <tr
                       key={repair.id}
-                      className="border-t border-zinc-800 text-zinc-200"
+                      className="border-t border-white/10 text-zinc-200"
                     >
                       <td className="px-6 py-4">
                         <Link
